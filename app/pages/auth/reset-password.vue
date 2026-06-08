@@ -46,7 +46,7 @@ const handleSubmit = async () => {
   tokenError.value = false;
 
   try {
-    await api.post('/auth/reset-password', {
+    await api.post('/api/auth/reset-password', {
       token: token.value,
       email: email.value,
       password: password.value,

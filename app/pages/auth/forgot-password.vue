@@ -20,7 +20,7 @@ const handleSubmit = async () => {
   showSuccess.value = false;
 
   try {
-    await api.post('/auth/forgot-password', { email: email.value });
+    await api.post('/api/auth/forgot-password', { email: email.value });
     showSuccess.value = true;
     success('Verifique o seu email');
   } catch (err: any) {

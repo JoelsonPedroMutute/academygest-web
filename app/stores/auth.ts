@@ -53,7 +53,7 @@ export const useAuthStore = defineStore("auth", {
       
       try {
         const api = useApi();
-        const response = await api.post("/auth/login", {
+        const response = await api.post("/api/auth/login", {
           email,
           password,
         });
@@ -67,17 +67,18 @@ export const useAuthStore = defineStore("auth", {
         this.setToken(token);
         this.setUser(userData);
         
-        const tokenCookie = useCookie("token");
+        const tokenCookie = useCookie("token", { maxAge: 60 * 60 * 24 * 7 });
         tokenCookie.value = token;
         
         success("Login realizado com sucesso!");
         
+        const router = useRouter();
         if (userData.role === 'admin') {
-          navigateTo('/dashboard/admin');
+          await router.push('/dashboard/admin');
         } else if (userData.role === 'docente') {
-          navigateTo('/dashboard/docente');
+          await router.push('/dashboard/docente');
         } else {
-          navigateTo('/dashboard/aluno');
+          await router.push('/dashboard/aluno');
         }
         
       } catch (err: any) {

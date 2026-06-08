@@ -8,7 +8,7 @@ export const useAuth = () => {
 
   const fetchUser = async () => {
     try {
-      const data = await useApi().get<any>("/auth/me");
+      const data = await useApi().get<any>("/api/auth/me");
       const userData = data.user || data;
       store.setUser(userData);
     } catch (err) {
@@ -23,7 +23,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      await useApi().post("/auth/logout", {});
+      await useApi().post("/api/auth/logout", {});
     } catch (e) {
       console.log("Logout error", e);
     } finally {
