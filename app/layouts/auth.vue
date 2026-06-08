@@ -16,11 +16,13 @@
         <NuxtPage />
       </div>
     </div>
+
+    <ToastContainer />
   </div>
 </template>
 
 <script setup lang="ts">
-// Layout puro, sem lógica complexa
+import ToastContainer from '~/components/ui/ToastContainer.vue';
 </script>
 
 <style scoped lang="scss">

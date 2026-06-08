@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: 'admin',
+  middleware: ['auth']
+})
 type AdminStats = {
   alunos: number
   docentes: number

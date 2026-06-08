@@ -1,13 +1,5 @@
 <script setup lang="ts">
-const user = process.client
-  ? JSON.parse(localStorage.getItem("user") || "null")
-  : null
-
-function logout() {
-  localStorage.removeItem("token")
-  localStorage.removeItem("user")
-  navigateTo("/login")
-}
+const { user, logout } = useAuth();
 </script>
 
 <template>

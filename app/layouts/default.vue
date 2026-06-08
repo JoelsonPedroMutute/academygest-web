@@ -26,11 +26,13 @@
     <footer class="footer">
       <p>© {{ new Date().getFullYear() }} AcademyGest. Todos os direitos reservados.</p>
     </footer>
+
+    <ToastContainer />
   </div>
 </template>
 
 <script setup lang="ts">
-// layout simples sem lógica obrigatória
+import ToastContainer from '~/components/ui/ToastContainer.vue';
 </script>
 
 <style scoped lang="scss">

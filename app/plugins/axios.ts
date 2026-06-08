@@ -5,7 +5,7 @@ export default defineNuxtPlugin(() => {
     baseURL: config.public.apiBase,
 
     onRequest({ options }) {
-      const token = import.meta.client ? localStorage.getItem("token") : null;
+      const token = useCookie("token").value;
 
       if (token) {
         const headers = new Headers(options.headers);
@@ -18,10 +18,8 @@ export default defineNuxtPlugin(() => {
 
     onResponseError({ response }) {
       if (response.status === 401) {
-        if (import.meta.client) {
-          localStorage.removeItem("token");
-          navigateTo("/login");
-        }
+        useCookie("token").value = null;
+        navigateTo("/login");
       }
     },
   });

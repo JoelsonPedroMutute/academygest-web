@@ -33,15 +33,19 @@
         <NuxtPage />
       </main>
     </div>
+
+    <ToastContainer />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import ToastContainer from '~/components/ui/ToastContainer.vue';
 
 const router = useRouter()
 const route = useRoute()
+const { logout } = useAuth();
 
 const pageTitle = computed(() => {
   const map: Record<string, string> = {
@@ -54,11 +58,6 @@ const pageTitle = computed(() => {
 
   return map[route.path] || 'Docente'
 })
-
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push('/auth/login')
-}
 </script>
 
 <style scoped lang="scss">

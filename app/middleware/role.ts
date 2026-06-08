@@ -1,16 +1,13 @@
 export default defineNuxtRouteMiddleware((to) => {
-  const token = process.client ? localStorage.getItem("token") : null;
-  const user = process.client
-    ? JSON.parse(localStorage.getItem("user") || "null")
-    : null;
+  const { isAuthenticated, role } = useAuth();
 
-  if (!token) {
+  if (!isAuthenticated.value) {
     return navigateTo("/login");
   }
 
   const allowedRoles = to.meta.roles as string[] | undefined;
 
-  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+  if (allowedRoles && !allowedRoles.includes(role.value as string)) {
     return navigateTo("/unauthorized");
   }
 });
