@@ -17,12 +17,13 @@ export const useCursos = () => {
 
   const cursos = ref<any[]>([]);
   const curso = ref<any>(null);
+  const allCursos = ref<any[]>([]);
 
   const fetchAll = async () => {
     await withLoading(async () => {
       try {
         const res = await api.get<any>(
-          `/admin/cursos?page=${page.value}&per_page=${perPage.value}`,
+          `/cursos?page=${page.value}&per_page=${perPage.value}`,
         );
         cursos.value = res.data ?? res;
         if (res.meta) total.value = res.meta.total;
@@ -32,10 +33,22 @@ export const useCursos = () => {
     });
   };
 
+  const fetchAllCursos = async () => {
+    try {
+      const res = await api.get<any>(
+        `/cursos?per_page=100`,
+      );
+      allCursos.value = res.data ?? res;
+    } catch (e) {
+      // Fallback to regular cursos
+      allCursos.value = cursos.value;
+    }
+  };
+
   const fetchOne = async (id: number) => {
     await withLoading(async () => {
       try {
-        curso.value = await api.get(`/admin/cursos/${id}`);
+        curso.value = await api.get(`/cursos/${id}`);
       } catch (e) {
         error("Erro ao carregar curso");
       }
@@ -45,7 +58,7 @@ export const useCursos = () => {
   const create = async (data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.post("/admin/cursos", data);
+        const res = await api.post("/cursos", data);
         success("Curso criado com sucesso");
         await fetchAll();
         return res;
@@ -59,7 +72,7 @@ export const useCursos = () => {
   const update = async (id: number, data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.patch(`/admin/cursos/${id}`, data);
+        const res = await api.put(`/cursos/${id}`, data);
         success("Curso actualizado com sucesso");
         await fetchAll();
         return res;
@@ -73,7 +86,7 @@ export const useCursos = () => {
   const remove = async (id: number) => {
     return await withLoading(async () => {
       try {
-        await api.del(`/admin/cursos/${id}`);
+        await api.del(`/cursos/${id}`);
         success("Curso removido com sucesso");
         await fetchAll();
       } catch (e: any) {
@@ -88,6 +101,7 @@ export const useCursos = () => {
   return {
     cursos: readonly(cursos),
     curso: readonly(curso),
+    allCursos: readonly(allCursos),
     loading,
     page,
     perPage,
@@ -100,6 +114,7 @@ export const useCursos = () => {
     goTo,
     reset,
     fetchAll,
+    fetchAllCursos,
     fetchOne,
     create,
     update,

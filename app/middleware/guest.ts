@@ -1,7 +1,13 @@
 export default defineNuxtRouteMiddleware(() => {
-  const token = process.client ? localStorage.getItem("token") : null;
+  const { isAuthenticated, role } = useAuth();
 
-  if (token) {
-    return navigateTo("/dashboard");
+  if (isAuthenticated.value) {
+    if (role.value === "admin") {
+      return navigateTo("/dashboard/admin");
+    } else if (role.value === "docente") {
+      return navigateTo("/dashboard/docente");
+    } else {
+      return navigateTo("/dashboard/aluno");
+    }
   }
 });

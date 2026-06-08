@@ -22,18 +22,17 @@
     <main class="content">
       <NuxtPage />
     </main>
+
+    <ToastContainer />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import ToastContainer from '~/components/ui/ToastContainer.vue';
 
 const router = useRouter()
-
-const logout = () => {
-  localStorage.removeItem('token')
-  router.push('/auth/login')
-}
+const { logout } = useAuth();
 </script>
 
 <style scoped lang="scss">
