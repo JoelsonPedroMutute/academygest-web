@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { 
-  Home, 
-  BookOpen, 
-  Book, 
-  Users, 
-  UserGroup, 
-  Building2, 
-  Clipboard, 
-  DocumentText, 
-  UserCircle, 
-  LogOut, 
-  Star, 
+import {
+  Home,
+  BookOpen,
+  Book,
+  Users,
+  GraduationCap,
+  Building2,
+  Clipboard,
+  FileText,
+  UserCircle,
+  LogOut,
+  Star,
   ChevronDown,
   X
 } from '@lucide/vue';
@@ -22,10 +22,10 @@ const menuItems = [
   { label: 'Cursos', icon: BookOpen, to: '/cursos' },
   { label: 'Disciplinas', icon: Book, to: '/admin/disciplinas' },
   { label: 'Professores', icon: Users, to: '/docentes' },
-  { label: 'Alunos', icon: UserGroup, to: '/alunos' },
+  { label: 'Alunos', icon: GraduationCap, to: '/alunos' },
   { label: 'Turmas', icon: Building2, to: '/admin/turmas' },
   { label: 'Matrículas', icon: Clipboard, to: '/matriculas' },
-  { label: 'Notas', icon: DocumentText, to: '/notas' },
+  { label: 'Notas', icon: FileText, to: '/notas' },
   { label: 'Perfil', icon: UserCircle, to: '/profile' },
 ];
 

@@ -36,7 +36,7 @@ export const useDisciplinas = () => {
         if (semestre.value) params.append("semestre", semestre.value.toString());
 
         const res = await api.get<any>(
-          `/disciplinas?${params.toString()}`,
+          `/admin/disciplinas?${params.toString()}`,
         );
         disciplinas.value = res.data ?? res;
         if (res.meta) total.value = res.meta.total;
@@ -50,7 +50,7 @@ export const useDisciplinas = () => {
   const fetchOne = async (id: number) => {
     await withLoading(async () => {
       try {
-        disciplina.value = await api.get(`/disciplinas/${id}`);
+        disciplina.value = await api.get(`/admin/disciplinas/${id}`);
       } catch (e) {
         error("Erro ao carregar disciplina");
       }
@@ -60,7 +60,7 @@ export const useDisciplinas = () => {
   const create = async (data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.post("/disciplinas", data);
+        const res = await api.post("/admin/disciplinas", data);
         success("Disciplina criada com sucesso");
         await fetchAll();
         return res;
@@ -74,7 +74,7 @@ export const useDisciplinas = () => {
   const update = async (id: number, data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.put(`/disciplinas/${id}`, data);
+        const res = await api.put(`/admin/disciplinas/${id}`, data);
         success("Disciplina actualizada com sucesso");
         await fetchAll();
         return res;
@@ -88,7 +88,7 @@ export const useDisciplinas = () => {
   const remove = async (id: number) => {
     return await withLoading(async () => {
       try {
-        await api.del(`/disciplinas/${id}`);
+        await api.del(`/admin/disciplinas/${id}`);
         success("Disciplina removida com sucesso");
         await fetchAll();
       } catch (e: any) {

@@ -59,7 +59,7 @@ export const useMatriculas = () => {
   const update = async (id: number, data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.patch(`/admin/matriculas/${id}`, data);
+        const res = await api.put(`/admin/matriculas/${id}`, data);
         success("Matrícula actualizada com sucesso");
         await fetchAll();
         return res;

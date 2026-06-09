@@ -1,41 +1,34 @@
 <script setup lang="ts">
-type Curso = {
-  id: number
-  nome: string
-}
-
-type DisciplinaForm = {
-  nome: string
-  codigo: string
-  curso_id: number | null
-  carga_horaria: number
-}
+definePageMeta({ layout: "admin", middleware: "auth" })
 
 const { $api } = useNuxtApp()
 const router = useRouter()
+const { success, error } = useToast()
 
-const form = reactive<DisciplinaForm>({
+const form = reactive<any>({
   nome: "",
-  codigo: "",
+  descricao: "",
   curso_id: null,
-  carga_horaria: 0,
 })
 
-const { data: cursos } = await useAsyncData<Curso[]>(
-  "cursos-disciplinas",
-  () =>
-    $api<Curso[]>("/cursos", {
-      method: "GET",
-    })
+const { data: res } = await useAsyncData("cursos-disciplinas", () =>
+  $api("/admin/cursos")
 )
 
-async function submit() {
-  await $api("/disciplinas", {
-    method: "POST",
-    body: form,
-  })
+const cursos = computed<any[]>(() => (res.value as any)?.data ?? res.value ?? [])
 
-  router.push("/disciplinas")
+async function submit() {
+  try {
+    await $api("/admin/disciplinas", {
+      method: "POST",
+      body: form,
+    })
+
+    success("Disciplina criada com sucesso.")
+    router.push("/disciplinas")
+  } catch (e: any) {
+    error("Erro ao criar disciplina.")
+  }
 }
 </script>
 
@@ -45,19 +38,18 @@ async function submit() {
 
     <div class="card">
       <input v-model="form.nome" class="input mb-2" placeholder="Nome" />
-      <input v-model="form.codigo" class="input mb-2" placeholder="Código" />
-      <input
-        v-model="form.carga_horaria"
-        type="number"
+
+      <textarea
+        v-model="form.descricao"
         class="input mb-2"
-        placeholder="Carga Horária"
+        placeholder="Descrição"
       />
 
       <select v-model="form.curso_id" class="input mb-4">
         <option :value="null">Selecionar Curso</option>
 
-        <option v-for="curso in cursos ?? []" :key="curso.id" :value="curso.id">
-          {{ curso.nome }}
+        <option v-for="c in cursos" :key="c.id" :value="c.id">
+          {{ c.nome }}
         </option>
       </select>
 

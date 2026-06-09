@@ -1,9 +1,11 @@
 <script setup lang="ts">
+definePageMeta({ layout: "admin", middleware: "auth" })
+
 const { $api } = useNuxtApp()
 
-const { data: cursos } = await useAsyncData("cursos", () =>
-  $api.get("/cursos")
-)
+const { data: res } = await useAsyncData("cursos", () => $api("/admin/cursos"))
+
+const items = computed<any[]>(() => (res.value as any)?.data ?? res.value ?? [])
 </script>
 
 <template>
@@ -17,21 +19,29 @@ const { data: cursos } = await useAsyncData("cursos", () =>
     </div>
 
     <div class="card">
-      <div
-        v-for="curso in cursos"
-        :key="curso.id"
-        class="border-b py-2 flex justify-between"
-      >
-        <NuxtLink :to="`/cursos/${curso.id}`">
-          {{ curso.nome }}
-        </NuxtLink>
+      <p v-if="items.length === 0" class="text-gray-500 py-4 text-center">
+        Nenhum curso encontrado.
+      </p>
 
-        <NuxtLink
-          :to="`/cursos/edit/${curso.id}`"
-          class="text-blue-600"
-        >
-          Editar
-        </NuxtLink>
+      <div
+        v-for="row in items"
+        :key="row.id"
+        class="border-b py-2 flex justify-between items-center"
+      >
+        <div>
+          <p class="font-medium">{{ row.nome }}</p>
+          <p class="text-sm text-gray-500">Duração: {{ row.duracao }}</p>
+        </div>
+
+        <div class="flex gap-4">
+          <NuxtLink :to="`/cursos/${row.id}`" class="text-blue-600">
+            Ver
+          </NuxtLink>
+
+          <NuxtLink :to="`/cursos/edit/${row.id}`" class="text-blue-600">
+            Editar
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>

@@ -18,12 +18,11 @@ export const useNotas = () => {
   const notas = ref<any[]>([]);
   const nota = ref<any>(null);
 
-  const fetchAll = async (role: "admin" | "aluno" = "admin") => {
+  const fetchAll = async () => {
     await withLoading(async () => {
       try {
-        const base = role === "admin" ? "/admin" : "/aluno";
         const res = await api.get<any>(
-          `${base}/notas?page=${page.value}&per_page=${perPage.value}`,
+          `/admin/notas?page=${page.value}&per_page=${perPage.value}`,
         );
         notas.value = res.data ?? res;
         if (res.meta) total.value = res.meta.total;
@@ -60,7 +59,7 @@ export const useNotas = () => {
   const update = async (id: number, data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.patch(`/admin/notas/${id}`, data);
+        const res = await api.put(`/admin/notas/${id}`, data);
         success("Nota actualizada com sucesso");
         await fetchAll();
         return res;

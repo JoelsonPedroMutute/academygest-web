@@ -111,6 +111,11 @@ const handleLogin = async () => {
             {{ isLoading ? 'Entrando...' : 'Entrar' }}
           </button>
         </form>
+
+        <div class="mt-6 text-center text-sm text-gray-500">
+          Não tem conta?
+          <NuxtLink to="/register" class="text-[#C0120C] hover:text-[#960E09] font-medium">Criar conta</NuxtLink>
+        </div>
       </div>
     </div>
   </div>

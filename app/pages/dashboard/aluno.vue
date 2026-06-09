@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ middleware: "aluno" })
+
 type AlunoStats = {
   media_notas: number
   frequencia: number
@@ -10,7 +12,7 @@ type AlunoStats = {
 const { $api } = useNuxtApp()
 
 const { data: stats } = await useAsyncData<AlunoStats>("aluno-stats", () =>
-  $api<AlunoStats>("/dashboard/aluno", {
+  $api<AlunoStats>("/aluno/dashboard", {
     method: "GET",
   })
 )

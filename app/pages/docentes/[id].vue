@@ -1,31 +1,40 @@
 <script setup lang="ts">
-type Docente = {
-  id: number
-  nome: string
-  email: string
-  especialidade: string
-}
+definePageMeta({ layout: "admin", middleware: "auth" })
 
 const route = useRoute()
 const { $api } = useNuxtApp()
 
-const { data: docente } = await useAsyncData<Docente>(
-  "docente",
-  () =>
-    $api<Docente>(`/docentes/${route.params.id}`, {
-      method: "GET",
-    })
+const { data: res } = await useAsyncData("docente", () =>
+  $api(`/admin/docentes/${route.params.id}`)
 )
+const item = computed<any>(() => (res.value as any)?.data ?? res.value)
 </script>
 
 <template>
   <div class="p-6">
-    <h1 class="text-xl font-bold">Detalhes do Docente</h1>
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-xl font-bold">Detalhes do Docente</h1>
+      <NuxtLink :to="`/docentes/edit/${route.params.id}`" class="btn-primary">
+        Editar
+      </NuxtLink>
+    </div>
 
-    <div class="card mt-4">
-      <p><strong>Nome:</strong> {{ docente?.nome }}</p>
-      <p><strong>Email:</strong> {{ docente?.email }}</p>
-      <p><strong>Especialidade:</strong> {{ docente?.especialidade }}</p>
+    <div class="card">
+      <p class="mb-2">
+        <strong>Nome:</strong> {{ item?.user?.name ?? item?.name ?? "—" }}
+      </p>
+      <p class="mb-2">
+        <strong>Email:</strong> {{ item?.user?.email ?? item?.email ?? "—" }}
+      </p>
+      <p class="mb-2">
+        <strong>Especialidade:</strong> {{ item?.especialidade ?? "—" }}
+      </p>
+      <p class="mb-2">
+        <strong>Telefone:</strong> {{ item?.telefone ?? "—" }}
+      </p>
+      <p class="mb-2">
+        <strong>Data de Nascimento:</strong> {{ item?.data_nascimento ?? "—" }}
+      </p>
     </div>
   </div>
 </template>

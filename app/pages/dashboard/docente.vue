@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ middleware: "docente" })
+
 type DocenteStats = {
   turmas: number
   disciplinas: number
@@ -10,7 +12,7 @@ type DocenteStats = {
 const { $api } = useNuxtApp()
 
 const { data: stats } = await useAsyncData<DocenteStats>("docente-stats", () =>
-  $api<DocenteStats>("/dashboard/docente", {
+  $api<DocenteStats>("/docente/dashboard", {
     method: "GET",
   })
 )

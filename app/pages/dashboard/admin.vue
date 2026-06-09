@@ -18,7 +18,7 @@ type AdminStats = {
 const { $api } = useNuxtApp()
 
 const { data: stats } = await useAsyncData<AdminStats>("admin-stats", () =>
-  $api<AdminStats>("/dashboard/admin", {
+  $api<AdminStats>("/admin/dashboard", {
     method: "GET",
   })
 )

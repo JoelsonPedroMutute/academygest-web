@@ -1,25 +1,14 @@
 <script setup lang="ts">
-type Disciplina = {
-  id: number
-  nome: string
-  codigo: string
-  carga_horaria: number
-  curso?: {
-    id: number
-    nome: string
-  }
-}
+definePageMeta({ layout: "admin", middleware: "auth" })
 
 const route = useRoute()
 const { $api } = useNuxtApp()
 
-const { data: disciplina } = await useAsyncData<Disciplina>(
-  "disciplina",
-  () =>
-    $api<Disciplina>(`/disciplinas/${route.params.id}`, {
-      method: "GET",
-    })
+const { data: res } = await useAsyncData("disciplina", () =>
+  $api(`/admin/disciplinas/${route.params.id}`)
 )
+
+const item = computed<any>(() => (res.value as any)?.data ?? res.value)
 </script>
 
 <template>
@@ -27,10 +16,9 @@ const { data: disciplina } = await useAsyncData<Disciplina>(
     <h1 class="text-xl font-bold">Detalhes da Disciplina</h1>
 
     <div class="card mt-4">
-      <p><strong>Nome:</strong> {{ disciplina?.nome }}</p>
-      <p><strong>Código:</strong> {{ disciplina?.codigo }}</p>
-      <p><strong>Carga Horária:</strong> {{ disciplina?.carga_horaria }}</p>
-      <p><strong>Curso:</strong> {{ disciplina?.curso?.nome }}</p>
+      <p><strong>Nome:</strong> {{ item?.nome }}</p>
+      <p><strong>Curso:</strong> {{ item?.curso?.nome }}</p>
+      <p><strong>Descrição:</strong> {{ item?.descricao }}</p>
     </div>
   </div>
 </template>

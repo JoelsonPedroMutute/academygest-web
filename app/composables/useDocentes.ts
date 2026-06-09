@@ -59,7 +59,7 @@ export const useDocentes = () => {
   const update = async (id: number, data: any) => {
     return await withLoading(async () => {
       try {
-        const res = await api.patch(`/admin/docentes/${id}`, data);
+        const res = await api.put(`/admin/docentes/${id}`, data);
         success("Docente actualizado com sucesso");
         await fetchAll();
         return res;

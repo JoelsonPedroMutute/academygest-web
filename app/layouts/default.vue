@@ -7,13 +7,11 @@
       </div>
 
       <nav class="nav">
-        <NuxtLink to="/" class="link">Home</NuxtLink>
-        <NuxtLink to="/about" class="link">Sobre</NuxtLink>
-        <NuxtLink to="/contact" class="link">Contacto</NuxtLink>
+        <NuxtLink to="/" class="link">Início</NuxtLink>
       </nav>
 
       <div class="auth">
-        <NuxtLink to="/auth/login" class="login">Entrar</NuxtLink>
+        <NuxtLink to="/login" class="login">Entrar</NuxtLink>
       </div>
     </header>
 

@@ -1,22 +1,13 @@
 <script setup lang="ts">
-type Disciplina = {
-  id: number
-  nome: string
-  curso?: {
-    id: number
-    nome: string
-  }
-}
+definePageMeta({ layout: "admin", middleware: "auth" })
 
 const { $api } = useNuxtApp()
 
-const { data: disciplinas } = await useAsyncData<Disciplina[]>(
-  "disciplinas",
-  () =>
-    $api<Disciplina[]>("/disciplinas", {
-      method: "GET",
-    })
+const { data: res } = await useAsyncData("disciplinas", () =>
+  $api("/admin/disciplinas")
 )
+
+const items = computed<any[]>(() => (res.value as any)?.data ?? res.value ?? [])
 </script>
 
 <template>
@@ -30,27 +21,32 @@ const { data: disciplinas } = await useAsyncData<Disciplina[]>(
     </div>
 
     <div class="card">
+      <div v-if="items.length === 0" class="py-8 text-center text-gray-500">
+        Nenhuma disciplina encontrada.
+      </div>
+
       <div
-        v-for="disciplina in disciplinas ?? []"
-        :key="disciplina.id"
-        class="border-b py-2 flex justify-between"
+        v-for="row in items"
+        :key="row.id"
+        class="border-b py-2 flex justify-between items-center"
       >
         <div>
-          <p class="font-medium">
-            {{ disciplina.nome }}
-          </p>
-
-          <p class="text-sm text-gray-500">
-            Curso: {{ disciplina.curso?.nome }}
-          </p>
+          <p class="font-medium">{{ row.nome }}</p>
+          <p class="text-sm text-gray-500">Curso: {{ row.curso?.nome }}</p>
         </div>
 
-        <NuxtLink
-          :to="`/disciplinas/edit/${disciplina.id}`"
-          class="text-blue-600"
-        >
-          Editar
-        </NuxtLink>
+        <div class="flex gap-3">
+          <NuxtLink :to="`/disciplinas/${row.id}`" class="text-blue-600">
+            Ver
+          </NuxtLink>
+
+          <NuxtLink
+            :to="`/disciplinas/edit/${row.id}`"
+            class="text-blue-600"
+          >
+            Editar
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
